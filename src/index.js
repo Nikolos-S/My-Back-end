@@ -1,4 +1,5 @@
 import express from 'express';
+import db from './db.js';
 
 /*
 fetch('http://localhost:3000/courses', { method: 'post', body: JSON.stringify({ title: 'dba' }),
@@ -7,8 +8,8 @@ fetch('http://localhost:3000/courses', { method: 'post', body: JSON.stringify({ 
     }})
         .then((res) => res.json())
         .then((json) => console.log(json));
-*/
-const db = {
+
+        const db = {
     courses: [
         { id: 1, title: 'front-end' },
         { id: 2, title: 'back-end' },
@@ -16,6 +17,11 @@ const db = {
         { id: 4, title: 'automation qa' },
     ]
 };
+ let foundCourses = db.courses;
+     if(req.query.title) {
+       foundCourses = db.courses.filter((cours) => cours.title.indexOf(req.query.title) > -1);
+     }
+*/
 
 const HTTP_STATUSES = {
     OK_200: 200,
@@ -40,11 +46,8 @@ app.get('/user', (req, res) => {
     res.json({ data: 'Hello user!!!!!!' });
   });
 
-  app.get('/courses', (req, res) => {
-    let foundCourses = db.courses;
-    if(req.query.title) {
-        foundCourses = db.courses.filter((cours) => cours.title.indexOf(req.query.title) > -1);
-    }
+  app.get('/courses',async (req, res) => {
+    const foundCoursers = await db.query(`SELECT * FROM courses`)
         res.json(foundCourses);
   });
 

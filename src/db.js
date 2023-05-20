@@ -4,10 +4,10 @@ const { Pool } = pkg;
 
 const pool = new Pool({
     user: 'testuser',
-    host: '127.0.0.1',
+    host: '192.168.0.109',
     database: 'testdb',
-    password: 'root',
-    port: '12345',
+    password: '12345',
+    port: 5432,
 });
 
 pool.connect((err, client, release) => {
